@@ -23,7 +23,7 @@ class ApiTasksController extends Controller
     public function get_tasks()
     {   
         $collection = $this->db->tasks;
-        $result = $collection->find();
+        $result = $collection->find([], [ 'sort' => array('created_at' => -1) ]);
         $items = [];    
         foreach ($result as $entry) {
             $items[] = $entry;

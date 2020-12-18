@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use MongoDB\Client;
 use MongoDB\BSON\ObjectID;
+use MongoDB\BSON\UTCDateTime;
 use App\Libs\LibMongo;
 //
 class TasksController extends Controller
@@ -45,7 +46,8 @@ class TasksController extends Controller
         $collection = $this->db->tasks;
         $result = $collection->insertOne( [
             'title' => $data["title"], 
-            'content' => $data["content"], 
+            'content' => $data["content"],
+            'created_at' =>  new UTCDateTime, 
        ]);              
         return redirect()->route('tasks.index');
 //        exit();
