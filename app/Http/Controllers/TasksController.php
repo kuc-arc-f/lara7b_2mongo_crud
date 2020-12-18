@@ -78,7 +78,9 @@ class TasksController extends Controller
     {
         $collection = $this->db->tasks;
         $data = $request->all();
-        $new_item = array('$set' => array("title" => $data["title"] ));
+        $new_item = array('$set' => array(
+            "title" => $data["title"], "content" => $data["content"] 
+        ));
         $result = $collection->updateOne(
             array("_id"=>new ObjectID( $id ) ),
             $new_item
