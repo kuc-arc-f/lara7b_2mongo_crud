@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redis;
 use MongoDB\Client;
 use MongoDB\BSON\ObjectID;
 use App\Libs\LibMongo;
+use App\Libs\LibPagenate;
 //
 class ApiTasksController extends Controller
 {
@@ -22,14 +23,29 @@ class ApiTasksController extends Controller
      **************************************/
     public function get_tasks()
     {   
+        $page = $_GET['page'];
+//print_r($page);
+//exit();
+        $LibPagenate = new LibPagenate();
+        $LibPagenate->init();
+        $page_info = $LibPagenate->get_page_start($page); 
+//print_r($page_info);
         $collection = $this->db->tasks;
-        $result = $collection->find([], [ 'sort' => array('created_at' => -1) ]);
+        $result = $collection->find([], 
+        [ 
+            'sort' => array('created_at' => -1), 
+            'skip' => $page_info["start"],
+            'limit' => $page_info["limit"],
+        ]
+        );        
         $items = [];    
         foreach ($result as $entry) {
             $items[] = $entry;
 //            var_dump($entry["_id"]);
         }
-        return response()->json($items);
+        $param = $LibPagenate->get_page_items($items);
+//print_r(count($items));
+        return response()->json($param);
     }
     /**************************************
      *

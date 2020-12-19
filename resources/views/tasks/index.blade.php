@@ -20,20 +20,28 @@
 <script type="text/babel" src="/js/component/Tasks/IndexRow.js?a3" ></script>
 
 <script type="text/babel">
+ var PAGE= {{$page}};
+
 class List extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {data: ''}
+//        this.state = {data: ''}
+        this.state = {data: '', item_count:0, paginate_disp:0 }
     }
     componentDidMount(){
-        this.get_items();
+        this.get_items(PAGE);
     }
-    get_items(){
-        axios.get("/api/apitasks/get_tasks").then(res =>  {
-            var items = res.data
+    get_items(page){
+        axios.get("/api/apitasks/get_tasks?page="+ page ).then(res =>  {
+//            var items = res.data
+            var data = res.data
+            var paginate_disp = data.page_item.paginate_disp;
             var arr =[];
-console.log(items );
-            this.setState({ data: items })
+console.log(data );
+console.log(paginate_disp );
+            this.setState({
+                data: data.docs, paginate_disp: paginate_disp
+            })
         })
     }    
     tabRow(){
@@ -43,6 +51,20 @@ console.log(items );
             })
         }
     }
+    dispPagenate(){
+//console.log(this.state.paginate_disp)
+        if(this.state.paginate_disp ===1){
+            var url = "/tasks?page="
+            return(
+            <div className="paginate_wrap">
+                <div className="btn-group" role="group" aria-label="Basic example">
+                    <a href={url+ 1} className="btn btn-outline-primary"> 1st  </a>
+                    <a href={url+ (PAGE+1)} className="btn btn-outline-primary"> > </a>
+                </div>
+            </div>
+            )
+        }
+    }    
     render(){
         return (
         <div>
@@ -57,7 +79,10 @@ console.log(items );
                 <tbody>
                 {this.tabRow()}
                 </tbody>
-            </table>            
+            </table> 
+            <hr />
+            {this.dispPagenate()}
+            <br /><br />
         </div>
         )
     }

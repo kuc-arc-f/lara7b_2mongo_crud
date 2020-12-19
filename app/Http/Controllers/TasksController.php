@@ -10,6 +10,7 @@ use MongoDB\Client;
 use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\UTCDateTime;
 use App\Libs\LibMongo;
+use App\Libs\LibPagenate;
 //
 class TasksController extends Controller
 {
@@ -25,8 +26,16 @@ class TasksController extends Controller
      **************************************/
     public function index()
     {
+        $page = 1;
+        if(isset($_GET['page'])){
+            $page = $_GET['page'];
+//            print_r($page);
+        }
+//        exit();
         $tasks = [];
-        return view('tasks/index')->with('tasks', $tasks);
+        return view('tasks/index')->with([
+            'tasks', $tasks, 'page' => $page,
+        ]);
     }    
     /**************************************
      *
@@ -105,14 +114,18 @@ class TasksController extends Controller
      *
      **************************************/
     public function test1(){
-//        $client = new MongoDB\Client("mongodb://mongo:27017");
-//$collection = $client->db1->tasks;
-        $collection = $this->db->tasks;
+//var_dump("#test1");
+        $LibPagenate = new LibPagenate();
+        $LibPagenate->init();
+        $ret = $LibPagenate->get_page_start(1);
+print_r($ret);
+        exit();
+        /*
         $result = $collection->findOne(
-//            ["_id"=>new MongoDB\BSON\ObjectID("5fdab56a231fd030630a6722")]
             ["_id"=>new ObjectID("5fdab56a231fd030630a6722")]
         );
         return response()->json($result );
+        */
         /*
         print_r($result );
         print_r($result["_id"] );
@@ -125,7 +138,6 @@ class TasksController extends Controller
             var_dump("#title=". $entry["title"]);
         }        
         */
-        exit();
     }
 
 }
