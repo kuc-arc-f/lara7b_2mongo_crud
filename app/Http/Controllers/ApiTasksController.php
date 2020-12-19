@@ -8,6 +8,8 @@ use MongoDB\Client;
 use MongoDB\BSON\ObjectID;
 use App\Libs\LibMongo;
 use App\Libs\LibPagenate;
+use App\Libs\LibTask;
+
 //
 class ApiTasksController extends Controller
 {
@@ -43,6 +45,8 @@ class ApiTasksController extends Controller
             $items[] = $entry;
 //            var_dump($entry["_id"]);
         }
+        $LibTask = new LibTask();
+        $items = $LibTask->convert_utc_date($items);
         $param = $LibPagenate->get_page_items($items);
 //print_r(count($items));
         return response()->json($param);

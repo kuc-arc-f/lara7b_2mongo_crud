@@ -17,7 +17,7 @@
 </div>
 <!-- -->
 <!-- -->
-<script type="text/babel" src="/js/component/Tasks/IndexRow.js?a3" ></script>
+<script type="text/babel" src="/js/component/Tasks/IndexRow.js?a1" ></script>
 
 <script type="text/babel">
  var PAGE= {{$page}};

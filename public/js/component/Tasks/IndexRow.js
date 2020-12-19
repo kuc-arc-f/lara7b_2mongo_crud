@@ -3,7 +3,7 @@ class IndexRow extends React.Component {
 //        console.log(this.props.obj)
     }
     render(){
-console.log( this.props.obj._id.$oid )
+console.log( this.props.obj.date )
         return (
         <tr>
             <td>
@@ -13,7 +13,8 @@ console.log( this.props.obj._id.$oid )
                 <a href={"/tasks/"+ this.props.obj._id.$oid}>{this.props.obj.title}
                 </a>
                 <a href={"/tasks/"+ this.props.obj._id.$oid +"/edit"} > [ edit ]
-                </a>
+                </a><br />
+                { this.props.obj.date }
             </td>
             <td>
             </td>
